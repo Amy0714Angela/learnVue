@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>slot default</title>
+</head>
+<body>
+    <div id="app">
+        <h1>默认slot</h1>
+        <navigation-link :url="url">
+            默认slot测试
+        </navigation-link>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component("navigation-link",{
+            props:['url'],
+            template:`
+                <a :href="url" class="nav-link">
+                    <slot></slot>
+                </a>
+            `
+        });
+        new Vue({
+            el:"#app",
+            data:{
+                url:"https://cn.vuejs.org/v2/guide/components-slots.html"
+            }
+        })
+    </script>
+</body>
+</html>
