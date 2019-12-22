@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>7.3 组件通信:子组件索引</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        vue.js2中 子组件索引 也可实现组件间通信（不推荐，避免在模板或计算属性中使用$refs）
+    </p>
+    <div id="app" v-cloak>
+        <button @click="handleRef">通过ref获取子组件实例</button>
+        <my-component ref="myCom1"></my-component>
+        <my-component ref="myCom"></my-component>
+    </div>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        Vue.component("my-component",{
+            template:`
+                <div>子组件</div>
+            `,
+            data(){
+                return {
+                    counter:0
+                }
+            }
+        });
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                message:""
+            },
+            methods:{
+                handleRef(){
+                    //通过$ref访问指定实例
+                    var counter = this.$refs.myCom.counter;
+                    console.log(counter);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>slot dialog example</title>
+</head>
+<body>
+    <div id="app">
+        <h1>
+            <a href="https://www.cnblogs.com/beevesnoodles/p/10050501.html" target="_blank">
+                一个标准的 dialog 对话框，它抽出来做成一个组件
+            </a>
+        </h1>
+        <img src="https://user-gold-cdn.xitu.io/2018/12/1/167691ae898ea212?w=739&h=293&f=png&s=6804" alt="">
+        <dialog-com :title="title" :content="content" :btn-arr="btnArr">
+            <template v-slot:header>
+                {{title}}
+            </template>
+            <template v-slot:content>
+                {{content}}
+            </template>
+            <template v-slot:footer>
+                <button v-for="btn in btnArr">{{btn}}</button>
+            </template>
+        </dialog-com>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var dialogCom = {
+            props:{
+                title:{
+                    type:String,
+                    require:true
+                },
+                content:{
+                    type:String
+                },
+                btnArr:{
+                    type:Array,
+                    default(){
+                        return [];
+                    }
+                }
+            },
+            template:`
+                <div class="dialog-panel">
+                    <div class="dialog-header">  
+                        <h3 class="title">
+                            <slot name="header">这是默认标题</slot>
+                        </h3>
+                        <button class="close">x</button>
+                    </div>
+                    
+                    <div class="dialog-content">
+                        <slot name="content">这是一个标准的 dialog 对话框</slot>
+                    </div>
+                    <div class="dialog-footer">
+                        <slot name="footer">
+                            <button>取消</button>
+                            <button>确定</button>
+                        </slot>
+                    </div>
+                </div>
+            `
+        };
+        new Vue({
+            el:"#app",
+            components:{
+                "dialogCom":dialogCom
+            },
+            data:{
+                title:"test title",
+                content:"test content",
+                btnArr:["修改","取消"]
+            }
+        })
+    </script>
+</body>
+</html>

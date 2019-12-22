@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>slot rating example</title>
+</head>
+<body>
+    <div id="app">
+        <h1>
+            <a href="https://www.cnblogs.com/beevesnoodles/p/10050501.html" target="_blank">
+                一个标准的 dialog 对话框，它抽出来做成一个组件
+            </a>
+        </h1>
+        <img src="https://user-gold-cdn.xitu.io/2018/12/1/167691ae87e45e9e?w=432&h=102&f=png&s=7133" alt="">
+        <rating-com></rating-com>
+        {{stars}}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var ratingCom = {
+            props:{
+                stars:{
+                    type:Array,
+                    default(){
+                        return [];
+                    }
+                }
+            },
+            template:`
+                <div class="rate-list">
+                    <span 
+                        v-for="(star, index) in stars" 
+                        :key="index" 
+                        @click="clickStart(index)"
+                    >
+                        <slot :star="star"></slot>
+                    </span>
+                </div>
+            `
+        };
+        new Vue({
+            el:"#app",
+            components:{
+                "ratingCom":ratingCom
+            },
+            data:{
+                off: "el-icon-star-off",
+                on: "el-icon-star-on",
+                rating: 2
+            },
+            computed: {
+                stars() {
+                    return [1, 2, 3, 4, 5].map(value => this.rating < value);
+                }
+            },
+            method:{
+                clickStart(index){
+                   //this.rating = index + 1;
+                   this.rating++; 
+                }
+            }
+        })
+    </script>
+</body>
+</html>

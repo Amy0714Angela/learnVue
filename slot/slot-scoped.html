@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>scoped slot</title>
+</head>
+<body>
+    <div id="app">
+        <p>slot分发的内容作用域是在父组件上的</p>
+        <p>子组件&lt;slot&gt;内的备用内容，作用域是子组件本身</p>
+        <hr>
+        <child-component>
+            <template scope="props"><!--临时变量：访问来自子组件插槽的数据msg-->
+                <p>来自父组件的内容</p>
+                <p>{{props.msg}}</p>
+            </template>
+        </child-component>
+        <hr>
+        <h3>作用域插槽更具代表性的用例是列表组件：允许组件自定义应用如何渲染列表每一项</h3>
+        <my-list :books="books">
+            <template  v-slot:book="props">
+                <li>{{props.bookName}}</li>
+            </template>
+        </my-list>
+        <base-layout>
+        <hr>
+            <template v-slot:header>
+                <h1>Here might be a page title</h1>
+                <h3>有多个相同类型slot时显示最后一个</h3>
+            </template>
+            <!--默认slot几种写法start-->
+            <!--1：不使用template-->
+            <p>There's no template tags.A paragraph for the main content.</p>
+            <!--2:使用template，没有使用v-slot-->
+            <template>
+                <p>There's template tag without v-slot.A paragraph for the main content.</p>
+            </template>
+            <!--3:使用template，使用v-slot-->
+            <template v-slot>
+                <p>There's template tag with v-slot.</p>
+            </template>
+            <!--4:使用template，使用v-slot:default-->
+            <template v-slot>
+                <p>There's template tag with v-slot:default.</p>
+            </template>
+            <!--默认slot几种写法end-->
+            
+            <template v-slot:footer>
+                <p>Here's some contact info</p>
+            </template>
+            <template v-slot:footer>
+                <p>this is the second footer</p>
+            </template>
+            
+        </base-layout>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        Vue.component("child-component",{
+            template:`
+                <div class="container">
+                    <slot msg="来自子组件的内容"></slot>
+                    <!--将数据msg传递到插槽slot-->
+                </div>
+            `
+        });
+        Vue.component("my-list",{
+            props:{
+                books:{
+                    type:Array,
+                    default:function(){
+                        return [];
+                    }
+                }
+            },
+            template:`
+                <ul>
+                   <slot name="book" v-for="book in books" :book-name="book.name"></slot>
+                </ul>
+            `
+        });
+        Vue.component("base-layout",{
+            template:`
+            <div class="container">
+                <header>
+                    <!-- 我们希望把页头放这里 -->
+                    <slot name="header"></slot>
+                </header>
+                <main>
+                    <!-- 我们希望把主要内容放这里 -->
+                    <slot name="default"></slot>
+                </main>
+                <footer>
+                    <!-- 我们希望把页脚放这里 -->
+                    <slot name="footer"></slot>
+                </footer>
+            </div>
+            `
+        });
+        new Vue({
+            el:"#app",
+            data:{
+                "books":[
+                    {"name":"aa"},
+                    {"name":"bb"},
+                    {"name":"cc"}
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

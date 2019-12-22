@@ -10,7 +10,7 @@
     <div id="app">
         <h1>默认slot</h1>
         <navigation-link :url="url">
-            默认slot测试
+            默认slot测试，可去掉此行查看显示效果
         </navigation-link>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -19,7 +19,9 @@
             props:['url'],
             template:`
                 <a :href="url" class="nav-link">
-                    <slot></slot>
+                    <slot>
+                        <p>如果父组件中没有插入内容，将作用默认出现</p>
+                    </slot>
                 </a>
             `
         });

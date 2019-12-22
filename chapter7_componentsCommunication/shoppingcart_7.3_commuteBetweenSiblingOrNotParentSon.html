@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>7.3 组件通信:非父子组件通信</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        vue.js2中
+        1、推荐使用一个空的vue实例作为中央事件总线（bus）
+        2、父链
+        3、子组件索引
+    </p>
+    <div id="app" v-cloak>
+        <p>{{message}}</p>
+        <my-component></my-component>
+    </div>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        var bus = new Vue();
+
+        Vue.component("my-component",{
+            template:`
+                <button @click="handleEvent">传递事件</button>
+            `,
+            data(){
+                return {
+                    counter:0
+                }
+            },
+            methods:{
+                handleEvent(){
+                    bus.$emit("on-message","来自my-component组件的内容");
+                }
+            }
+        });
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                message:""
+            },
+            mounted(){
+                var _this = this;
+                //在实例初始化时，监听来自bus实例的事件
+                bus.$on("on-message",(msg)=>{
+                    _this.message = msg;
+                });
+            }
+        });
+    </script>
+</body>
+</html>

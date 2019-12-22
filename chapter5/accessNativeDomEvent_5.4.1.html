@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{counter}}
+        <!--handleAdd时打印参数为MouseEvent对象-->
+        <button @click="handleAdd">+1</button>
+        <button @click="handleAdd()">+1</button>
+        <!--Vue提供特殊变量$event：用于访问原生dom事件-->
+        <!--实例：阻止链接打开-->
+        <a href="http://www.baidu.com" @click="handleClick('禁止打开',$event)">阻止链接打开</a>
+
+    </div>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                counter:0
+            },
+            methods:{
+                handleAdd(count)
+                {   
+                    console.log("count",count);
+                    console.log("event:",event);
+                    count = count || 1;
+                    this.counter = count;
+                },
+                handleClick(message,event){
+                    event.preventDefault();//使用原生dom事件
+                    window.alert(message);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>7.3 组件通信:父链</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        vue.js2中 父链 也可实现组件间通信（不推荐）
+    </p>
+    <div id="app" v-cloak>
+        <p>{{message}}</p>
+        <my-component></my-component>
+    </div>
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script>
+        Vue.component("my-component",{
+            template:`
+                <button @click="handleEvent">传递事件</button>
+            `,
+            data(){
+                return {
+                    counter:0
+                }
+            },
+            methods:{
+                handleEvent(){
+                    console.log(this.$parent);
+                    this.$parent.message = "来自组件component-a的内容";
+                }
+            }
+        });
+        var vm = new Vue({
+            el:"#app",
+            data:{
+                message:""
+            }
+        });
+    </script>
+</body>
+</html>
